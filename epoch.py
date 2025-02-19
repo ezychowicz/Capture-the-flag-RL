@@ -22,7 +22,11 @@ class Epoch:
                 self.simulation.agent.drawAgent(self.screen)
                 pygame.display.flip()
                 self.clock.tick(30)  
-            G += self.simulation.update() # accumulate return
+            newReturn = self.simulation.update()
+            if G == -float('inf'): # time's up
+                newReturn = -100
+                break
+            G += newReturn# accumulate return
             if self.simulation.agent.isDead() or self.simulation.agent.flagCaptured(): 
                 break
         return G

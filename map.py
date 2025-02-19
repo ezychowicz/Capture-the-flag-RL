@@ -13,6 +13,7 @@ class Map:
         self.world = defaultdict(lambda: {"WALL": None, "GOAL": None, "CANNON": None, "CANNONBALL": None, "APPLE": None})
         self.cannons = []
         self.cannonballs = [set() for row in range (config.GRID_ROWS)] # it is necessary to store these separately and in correct order
+        self.goal = None
         self.height = rows
         self.width = cols
         
@@ -30,7 +31,7 @@ class Map:
     def addGoals(self, positions: list[tuple[int, int]]):
         for pos in positions:
             self.world[pos]["GOAL"] = True # mark as a goal position 
-
+            self.goal = pos
     def getAvailableActions(self, state, agent):
         walls = state[:,:,ObjectType.encode("WALL")] # matrix of walls
         centerRow, centerCol = len(walls)//2, len(walls[0])//2

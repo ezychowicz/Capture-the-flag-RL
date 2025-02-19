@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 
 class Policy(ABC):
     @abstractmethod
-    def chooseAction(self, state, agent, actions):
+    def chooseAction(self, state, agent, actions, goal):
         """Decides which action to take given the state and available actions."""
         pass
 

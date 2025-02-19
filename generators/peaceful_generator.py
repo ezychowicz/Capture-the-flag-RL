@@ -3,8 +3,10 @@ import random
 from map import Map
 from actions import Action
 
+# random.seed(1011)
+
 class PeacefulGenerator(MapGenerator):
-    def __init__(self, gridRows = random.randint(3,10), gridCols = random.randint(2,10)):
+    def __init__(self, gridRows = random.randint(3,20), gridCols = random.randint(2,20)):
         self.gridRows = gridRows
         self.gridCols = gridCols
         

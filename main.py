@@ -8,8 +8,9 @@ from simulation import Simulation
 from epoch import Epoch
 from qlearning import Qlearning
 from dqnstrategy import DQNStrategy
-from generators import peaceful_generator
+from generators import peaceful_generator, singular_cannon_generator, multiple_cannons_generator, cannons_apples_generator
 import json
+
 
 def load_map():
     world_list = []
@@ -34,36 +35,15 @@ def load_map():
 
     return game_map
 
-# def create_map():
-#     game_map = Map(GRID_ROWS, GRID_COLS) 
-#     game_map.addCannon(1, 1, 0)
-#     game_map.addCannon(2, 1, 1)
-#     game_map.addCannon(1, 5, 4)
-#     game_map.addCannon(1, 2, 6)
-#     game_map.addCannon(1, 3, 9)
-#     game_map.addCannon(3, 10, 11)
-#     game_map.addCannon(4, 1, 15)
-#     game_map.addCannon(5, 1, 19)
-#     game_map.addApple(10, 10,1)
-#     game_map.addApple(5,10,2)
-#     game_map.addApple(1,19,2)
-#     game_map.addApple(1,0,2)
-#     game_map.addWall(10,15)
-#     game_map.addWall(10,16)
-#     game_map.addWall(10,17)
-#     game_map.addWall(10,18)
-#     game_map.addWall(10,19)
-#     game_map.addWall(13,2)
-#     game_map.addWall(13,3)
-#     game_map.addWall(13,4)
-#     game_map.addWall(2,1)
-#     game_map.addWall(2,3)
-#     game_map.addWall(2,7)
-#     game_map.addWall(6,8)
-#     game_map.addWall(2,3)
-#     game_map.addWall(2,14)
-#     game_map.addGoals([(1,2), (1, 10)])
-#     return game_map
+def game_map_generator(generatorClass, num_maps):
+    for _ in range(num_maps):
+        generator = generatorClass()
+        game_map = generator.generateMap()
+        config.GRID_ROWS = generator.gridRows
+        config.GRID_COLS = generator.gridCols 
+        config.START_ROW = config.GRID_ROWS - 1
+        config.START_COL = config.GRID_COLS - 1
+        yield game_map
 
 def main():
     screen, clock = None, None
@@ -73,23 +53,33 @@ def main():
         pygame.display.set_caption("simulation")
         clock = pygame.time.Clock()
 
+    # training
+    maxG = -200
+    for typeOfMap in [singular_cannon_generator.SingularCannon, multiple_cannons_generator.MultipleCannons, cannons_apples_generator.CannonsApples]: #peaceful_generator.PeacefulGenerator,
+        for game_map in game_map_generator(typeOfMap, 5):
+            simulation = Simulation(Qlearning(), game_map)  # DQNStrategy(4*config.VISIBILITY**2 + 2, 9)
+            epoch = Epoch(screen, game_map, simulation, clock, draw = True)
+            for episode in range (100):
+                G = epoch.runEpisode()
+                print(G)
+                maxG = max(maxG, G)
+                simulation.cnt = 0
+    print(maxG)
+
+    # benchmark
     generator = peaceful_generator.PeacefulGenerator()
     game_map = generator.generateMap()
     config.GRID_ROWS = generator.gridRows
     config.GRID_COLS = generator.gridCols 
     config.START_ROW = config.GRID_ROWS - 1
-    config.START_COL = config.GRID_ROWS - 1
-    simulation = Simulation(DQNStrategy(4*config.VISIBILITY**2 + 2, 9), game_map) 
+    config.START_COL = config.GRID_COLS - 1
+    simulation = Simulation(Qlearning(), game_map)  # DQNStrategy(4*config.VISIBILITY**2 + 2, 9)
     epoch = Epoch(screen, game_map, simulation, clock, draw = True)
-    maxG = -200
-    for episode in range (10000):
+    for episode in range (100):
         G = epoch.runEpisode()
         print(G)
         maxG = max(maxG, G)
-        generator = peaceful_generator.PeacefulGenerator()
-        game_map = generator.generateMap()
         simulation.cnt = 0
-    print(maxG)
     pygame.quit()
 
 if __name__ == '__main__':

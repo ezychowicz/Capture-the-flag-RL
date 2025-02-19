@@ -5,6 +5,7 @@ from policy import Policy
 from world_element_encoding import ObjectType
 import numpy as np
 from actions import Action
+from copy import deepcopy
 
 class Simulation:
     def __init__(self, policy, worldMap):
@@ -18,6 +19,8 @@ class Simulation:
     def update(self): # step procedure
         # initialize S
         self.currState = self.scrapeState() if self.cnt == 0 else self.nextState
+        if self.cnt == 0:
+            self.agent.policy.actions = self.worldMap.getAvailableActions(self.currState, self.agent)
         # choose A from S using Q
         self.action = self.agent.analize(self.currState)
         #take action A
@@ -25,8 +28,9 @@ class Simulation:
         # observe R, S'
         self.reward = self.agent.reward(Action.fromTuple(self.action))
         self.nextState = self.scrapeState()
+        self.agent.policy.prevActions = self.agent.policy.actions
         self.agent.policy.updateActions(self.worldMap, self.nextState, self.agent) 
-        self.agent.policy.updateQ(self.currState, self.nextState, self.reward, self.action, self.agent)
+        self.agent.policy.updateQ(self.currState, self.nextState, self.reward, deepcopy(self.action), self.agent, self.worldMap.goal)
         # update cannonballs
         for row in range (config.GRID_ROWS - 1, -1, -1):
             for cannonball in self.worldMap.cannonballs[row]:
@@ -37,8 +41,10 @@ class Simulation:
             if self.cnt % cannon.rate == 0:
                 cannon.fire()
         self.cnt += 1
-        if self.cnt >= config.GRID_ROWS**3:
-            return -1
+        print(self.cnt)
+        if self.cnt >= config.GRID_ROWS**2:
+            self.agent.policy.updateQ(self.currState, self.nextState, -10, deepcopy(self.action), self.agent, self.worldMap.goal)
+            return -float('inf')
         return self.reward
     
     def scrapeState(self): # surroundings of agent

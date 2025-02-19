@@ -11,8 +11,7 @@ class Agent(WorldElement):
         
     def analize(self, state):
         actions = self.worldMap.getAvailableActions(state, self)
-        action = self.policy.chooseAction(state, self, actions)
-
+        action = self.policy.chooseAction(state, self, actions, self.worldMap.goal)
         return action
     
     def move(self, action):
