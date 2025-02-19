@@ -1,11 +1,11 @@
-from cannon import Cannon
-from wall import Wall
-from apple import Apple
+from world_elements.cannon import Cannon
+from world_elements.wall import Wall
+from world_elements.apple import Apple
 from collections import defaultdict
 import pygame
 # from config import CELL_SIZE, load_images, GRID_ROWS, GRID_COLS
 import config
-from world_element_encoding import ObjectType
+from world_elements.world_element_encoding import ObjectType
 from actions import Action
 from collections import deque
 class Map:

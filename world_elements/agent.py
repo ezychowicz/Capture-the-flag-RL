@@ -1,4 +1,4 @@
-from world_element import WorldElement
+from world_elements.world_element import WorldElement
 # from config import DEATH_REWARD, GOAL_REWARD, APPLE1_REWARD, APPLE2_REWARD, STAGNATION_REWARD, NOTHING_REWARD, GRID_ROWS
 import config
 from actions import Action

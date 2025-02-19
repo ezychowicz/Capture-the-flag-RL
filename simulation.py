@@ -1,8 +1,8 @@
 # from config import START_COL, START_ROW, VISIBILITY, GRID_ROWS
 import config
-from agent import Agent
+from world_elements.agent import Agent
 from policy import Policy
-from world_element_encoding import ObjectType
+from world_elements.world_element_encoding import ObjectType
 import numpy as np
 from actions import Action
 from copy import deepcopy

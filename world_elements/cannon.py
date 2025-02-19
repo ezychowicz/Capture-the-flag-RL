@@ -1,5 +1,5 @@
-from world_element import WorldElement
-from cannonball import Cannonball
+from world_elements.world_element import WorldElement
+from world_elements.cannonball import Cannonball
 class Cannon(WorldElement):
     def __init__(self,column, rate, step, worldMap):
         super().__init__(worldMap.height, column, worldMap)

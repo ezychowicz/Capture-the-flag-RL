@@ -1,6 +1,6 @@
 import pygame
 from map import Map
-from agent import Agent
+from world_elements.agent import Agent
 # from config import WINDOW_HEIGHT, WINDOW_WIDTH, GRID_ROWS, GRID_COLS, DRAW, VISIBILITY
 import config
 from randompolicy import RandomPolicy
@@ -14,7 +14,7 @@ import json
 
 def load_map():
     world_list = []
-    with open("trainingdata/grid.json", "r") as data:
+    with open("pregenerated_data/grid.json", "r") as data:
         world_list = json.load(data)
     game_map = Map(config.GRID_ROWS, config.GRID_COLS)
     for row_cnt, row in enumerate(world_list):
