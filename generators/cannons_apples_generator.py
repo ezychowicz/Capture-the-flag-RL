@@ -12,8 +12,8 @@ class CannonsApples(MapGenerator):
     def generateMap(self):
         mapGen = MultipleCannons()
         map = mapGen.generateMap()
-        posRows = random.sample(range(1, self.gridRows - 1))
-        posCols = random.sample(range(0, self.gridCols - 1))
+        posRows = random.sample(range(1, self.gridRows - 1), 2)
+        posCols = random.sample(range(0, self.gridCols - 1), 2)
         positions = list(zip(posRows, posCols))
         for row,col in positions:
             map.addApple(row,col,random.randint(1,2))

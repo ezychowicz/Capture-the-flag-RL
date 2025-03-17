@@ -73,6 +73,7 @@ def main():
     config.GRID_COLS = generator.gridCols 
     config.START_ROW = config.GRID_ROWS - 1
     config.START_COL = config.GRID_COLS - 1
+    game_map = load_map()
     simulation = Simulation(Qlearning(), game_map)  # DQNStrategy(4*config.VISIBILITY**2 + 2, 9)
     epoch = Epoch(screen, game_map, simulation, clock, draw = True)
     for episode in range (100):
