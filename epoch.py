@@ -14,6 +14,8 @@ class Epoch:
         running = True
         G = 0
         self.simulation.agent.row, self.simulation.agent.col = config.START_ROW, config.START_COL
+        self.worldMap.reAddApples() # if they were eaten in previous episode
+        
         while running:
             if self.draw:
                 running = not any(event.type == pygame.QUIT for event in pygame.event.get())
@@ -23,10 +25,8 @@ class Epoch:
                 pygame.display.flip()
                 self.clock.tick(30)  
             newReturn = self.simulation.update()
-            if G == -float('inf'): # time's up
-                newReturn = -100
-                break
-            G += newReturn# accumulate return
+            if G != -float('inf'): # time's not up
+                G += newReturn # accumulate return
             if self.simulation.agent.isDead() or self.simulation.agent.flagCaptured(): 
                 break
-        return G
+        return max(G, -10000) # if time's up G = -inf, replace it then with -10000

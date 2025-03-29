@@ -2,7 +2,6 @@ import pygame
 import sys
 from pathlib import Path
 import json
-# Ustawienia siatki i okna
 
 CELL_SIZE = 40
 GRID_ROWS = 30
@@ -10,7 +9,6 @@ GRID_COLS = 20
 WINDOW_WIDTH = GRID_COLS * CELL_SIZE
 WINDOW_HEIGHT = GRID_ROWS * CELL_SIZE
 
-# Stałe przykładowych nagród (możesz je później wykorzystać w symulacji)
 START_ROW, START_COL = 29, 19
 DEATH_REWARD = -1000
 STAGNATION_REWARD = -1
@@ -18,8 +16,10 @@ GOAL_REWARD = 1000
 APPLE1_REWARD = 10
 APPLE2_REWARD = 15
 NOTHING_REWARD = -1
-VISIBILITY = 3 # ograniczenie widoczności agenta
+VISIBILITY = 3 
+
 DRAW = True
+EPSILON = 0.1
 
 # Funkcja ładująca pojedynczy obrazek i skalująca go do rozmiaru komórki
 def load_image(file_name, scale=(CELL_SIZE, CELL_SIZE)):

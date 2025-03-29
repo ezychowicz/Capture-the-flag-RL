@@ -17,3 +17,4 @@ class CannonsApples(MapGenerator):
         positions = list(zip(posRows, posCols))
         for row,col in positions:
             map.addApple(row,col,random.randint(1,2))
+        return map

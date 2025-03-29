@@ -5,5 +5,5 @@ class Apple(WorldElement):
         super().__init__(row, col, worldMap)
         self.type = type
 
-
+    
 

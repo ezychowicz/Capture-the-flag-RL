@@ -3,7 +3,7 @@ import random
 from map import Map
 from .peaceful_generator import PeacefulGenerator
 
-
+random.seed(111)
 class SingularCannon(MapGenerator):
     def __init__(self, gridRows = random.randint(3,20), gridCols = random.randint(2,20)):
         self.gridRows = gridRows

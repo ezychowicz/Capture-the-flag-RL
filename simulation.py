@@ -41,7 +41,6 @@ class Simulation:
             if self.cnt % cannon.rate == 0:
                 cannon.fire()
         self.cnt += 1
-        print(self.cnt)
         if self.cnt >= config.GRID_ROWS**2:
             self.agent.policy.updateQ(self.currState, self.nextState, -10, deepcopy(self.action), self.agent, self.worldMap.goal)
             return -float('inf')

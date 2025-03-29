@@ -13,6 +13,7 @@ class Map:
         self.world = defaultdict(lambda: {"WALL": None, "GOAL": None, "CANNON": None, "CANNONBALL": None, "APPLE": None})
         self.cannons = []
         self.cannonballs = [set() for row in range (config.GRID_ROWS)] # it is necessary to store these separately and in correct order
+        self.apples = []
         self.goal = None
         self.height = rows
         self.width = cols
@@ -27,7 +28,12 @@ class Map:
     def addApple(self, row: int, col: int, type: int):
         if (row, col) not in self.world:
             self.world[(row, col)]["APPLE"] = Apple(type, row, col, self)
+            self.apples.append(self.world[(row, col)]["APPLE"])
 
+    def reAddApples(self):
+        for apple in self.apples:
+            self.world[(apple.row, apple.col)]["APPLE"] = apple
+        
     def addGoals(self, positions: list[tuple[int, int]]):
         for pos in positions:
             self.world[pos]["GOAL"] = True # mark as a goal position 
@@ -62,7 +68,6 @@ class Map:
                     screen.blit(images["CANNONBALL1"], (x, y))
                 else:
                     screen.blit(images["CANNONBALL2"], (x, y))
-                
             if cell["APPLE"] is not None:
                 if cell["APPLE"].type == 1:
                     screen.blit(images["APPLE1"], (x, y))

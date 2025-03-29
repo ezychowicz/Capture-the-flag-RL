@@ -30,7 +30,7 @@ class Qlearning(Policy):
             self.Q[state] = dict()
             for action in actions:
                 self.Q[state][action] = 0
-        return egreedy(self.Q[state], actions, epsilon=0.1)
+        return egreedy(self.Q[state], actions, epsilon=config.EPSILON)
         
     def makeHashable(state):
         newState = []
